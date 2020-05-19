@@ -1,3 +1,11 @@
 .idea/
 
 *.class
+
+*.iml
+
+*.aux
+
+*.log
+
+*.synctex.gz
