@@ -13,22 +13,19 @@ public class Main {
         //System.out.println(stringArbolAVL);
         Lista<String> palabrasCambias = diccionario.cambiaPalabra("valjena");
         System.out.println(palabrasCambias);
-        Lista<Lista<String>> doblePalabraCambiada  = new Lista<>();
-        for ( String palabra: palabrasCambias ){
-            doblePalabraCambiada.agregar(diccionario.cambiaPalabra(palabra));
-        }
-        System.out.println(doblePalabraCambiada);
 
-
-        for (Lista<String> lista1: doblePalabraCambiada){
-            for (String palabra1: lista1){
+        int contador = 0;
+         for (String palabra1: palabrasCambias){
                 if (stringArbolAVL.contiene(palabra1)){
+                    contador++;
                     ArbolAVL.NodoAVL nodoAVL = (ArbolAVL.NodoAVL) stringArbolAVL.buscando(palabra1);
                     System.out.println(nodoAVL);
                     System.out.println(nodoAVL.izquierdo);
                     System.out.println(nodoAVL.derecho);
                 }
             }
-        }
+         if (contador == 0){
+             System.out.println("No se encontró ninguna coincidencia");
+         }
     }
 }
