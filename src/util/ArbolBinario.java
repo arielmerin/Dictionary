@@ -1,16 +1,15 @@
 package util;
 
 import java.util.NoSuchElementException;
-
 /**
  * <p>Clase abstracta para modelar la estructura de datos Arbol Binario</p>
- * <p>Esta clase implementa una util.Lista genérica, es decir que es homogénea pero
+ * <p>Esta clase implementa una Lista genérica, es decir que es homogénea pero
  * puede tener elementos de cualquier tipo.</p>
  * <p>Puesto que todos los árboles binarios comparten algunas características similares,
  * esta clase sirve perfectamente para modelarlas. Sin embargo no es lo suficientemente
  * específica para modelar algun árbol completamente. Por lo que la implementación
  * final depende de las clases concretas que hereden de ésta.</p>
- * @author Ariel Merino 317031326
+ * @author Alejandro Hernández Mora <alejandrohmora@ciencias.unam.mx>
  * @version 1.0
  */
 
@@ -48,7 +47,7 @@ public abstract class ArbolBinario<T> implements Coleccionable<T> {
          *         <tt>false</tt> en otro caso.
          */
         public boolean hayIzquierdo() {
-            return  izquierdo != null;
+            return izquierdo != null;
         }
 
         /**
@@ -70,16 +69,15 @@ public abstract class ArbolBinario<T> implements Coleccionable<T> {
             }else if(tamanio == 1){
                 return 1;
             }else {
-                int alturader = 0;
-                int alturaizq = 0;
+                int der = 0;
+                int izq = 0;
                 if (hayDerecho())
-                      alturader = derecho.altura();
+                    der = derecho.altura();
                 if (hayIzquierdo())
-                     alturaizq = izquierdo.altura();
-                return 1 + Math.max(alturader, alturaizq);
+                    izq = izquierdo.altura();
+                return 1 + Math.max(der, izq);
             }
         }
-
         /**
          * Regresa el elemento al que apunta el nodo.
          * @return el elemento al que apunta el nodo.
@@ -100,26 +98,16 @@ public abstract class ArbolBinario<T> implements Coleccionable<T> {
          */
         @Override
         public boolean equals(Object o) {
-            if (o == null || getClass() != o.getClass()){
-                return false;
-            }
-            Nodo nodo = (Nodo) o;
-            return equals(this,nodo);
-        }
-        private boolean equals(Nodo nodo1, Nodo nodo2){
-            if (nodo1 == null && nodo1 == null){
+            Nodo aux = (Nodo) o;
+            if(this == null && o == null){
                 return true;
-            }
-            if ((nodo1 == null && nodo2 != null) || (nodo1 != null && nodo2 == null)){
+            }else if( this == null || o == null){
+                return false;
+            }else if(elemento.equals(aux.elemento)){
+                return izquierdo.equals(aux.izquierdo) && derecho.equals(aux.derecho);
+            }else{
                 return false;
             }
-            if (nodo1.elemento == null && nodo2.elemento == null){
-                return true;
-            }
-            if (!nodo1.elemento.equals(nodo2.elemento)){
-                return false;
-            }
-            return equals(nodo1.izquierdo, nodo2.izquierdo) && equals(nodo1.derecho, nodo2.derecho);
         }
 
 
@@ -128,7 +116,7 @@ public abstract class ArbolBinario<T> implements Coleccionable<T> {
          * @return una representación en cadena del nodo.
          */
         public String toString() {
-            return "( " +elemento +" )";
+            return "[ " + elemento + " ]";
         }
     }
 
@@ -149,8 +137,8 @@ public abstract class ArbolBinario<T> implements Coleccionable<T> {
      *        binario.
      */
     public ArbolBinario(Coleccionable<T> coleccion) {
-        for (T elemento : coleccion) {
-            this.agrega(elemento);
+        for(T elem : coleccion){
+            this.agrega(elem);
         }
     }
 
@@ -193,10 +181,11 @@ public abstract class ArbolBinario<T> implements Coleccionable<T> {
      * @throws NoSuchElementException si el árbol es vacío.
      */
     public Nodo<T> raiz() {
-        if (esVacio()){
-            throw new NoSuchElementException("El arbol es vacio");
+        if(! esVacio()){
+            return raiz;
+        }else{
+            throw new NoSuchElementException("No hay elementos en el árbol");
         }
-        return raiz;
     }
 
     /**
@@ -206,15 +195,15 @@ public abstract class ArbolBinario<T> implements Coleccionable<T> {
      */
     @Override
     public boolean esVacio() {
-         return tamanio == 0 && raiz == null;
+        return raiz == null && tamanio == 0;
     }
 
     /**
      * Limpia el árbol de elementos, dejándolo vacío.
      */
     public void limpia() {
-        raiz = null;
         tamanio = 0;
+        raiz = null;
     }
 
 
@@ -248,7 +237,7 @@ public abstract class ArbolBinario<T> implements Coleccionable<T> {
         return postorden;
     }
 
-    private void inordenAux(Nodo<T> n, Lista<T> l){
+    private void inordenAux(Nodo<T> n,Lista<T> l){
         if (n != null){
             inordenAux(n.izquierdo, l);
             l.agregar(n.elemento);
@@ -291,6 +280,7 @@ public abstract class ArbolBinario<T> implements Coleccionable<T> {
     @Override public String toString() {
         if (raiz == null)
             return "";
+
         boolean[] r = new boolean[altura()+1];
         for (int i = 0; i < altura()+1; i++)
             r[i] = false;
@@ -298,7 +288,7 @@ public abstract class ArbolBinario<T> implements Coleccionable<T> {
 
     }
 
-    private String cadena(Nodo<T> v, int n, boolean[] r) {
+    private String cadena(Nodo v, int n, boolean[] r) {
         String s = v + "\n";
         r[n] = true;
         if (v.izquierdo != null && v.derecho != null) {

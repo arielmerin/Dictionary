@@ -1,5 +1,4 @@
 package util;
-
 /**
  * <p>Clase para árboles AVL.</p>
  *
@@ -17,7 +16,6 @@ public class ArbolAVL<T extends Comparable<T>> extends ArbolBinarioBusqueda<T> {
 
         /** La altura del nodo. */
         public int altura;
-
         /**
          * Constructor único que recibe un elemento.
          * @param elemento el elemento del nodo.
@@ -26,24 +24,22 @@ public class ArbolAVL<T extends Comparable<T>> extends ArbolBinarioBusqueda<T> {
             super(elemento);
             this.altura = 0;
         }
-
         /**
          * Regresa la altura del nodo.
          * @return la altura del nodo.
          */
-        @Override public int altura() {
+        @Override
+        public int altura() {
             return this.altura;
         }
-
-
         /**
          * Regresa una representación en cadena del nodo AVL.
          * @return una representación en cadena del nodo AVL.
          */
-        @Override public String toString() {
+        @Override
+        public String toString() {
             return super.toString();
         }
-
         /**
          * Compara el nodo con otro objeto. La comparación es
          * <em>recursiva</em>.
@@ -58,7 +54,6 @@ public class ArbolAVL<T extends Comparable<T>> extends ArbolBinarioBusqueda<T> {
             return super.equals(o);
         }
     }
-
     /**
      * Constructor sin parámetros. Para no perder el constructor sin parámetros
      * de {@link ArbolBinarioBusqueda}.
@@ -76,65 +71,55 @@ public class ArbolAVL<T extends Comparable<T>> extends ArbolBinarioBusqueda<T> {
     public ArbolAVL(Coleccionable<T> coleccion) {
         super(coleccion);
     }
-
-    public ArbolAVL(Lista<T> coercion) {
-        for (T elemento : coercion) {
-            this.agrega(elemento);
-        }
-    }
-
     /**
      * Construye un nuevo nodo, usando una instancia de {@link NodoAVL}.
      * @param elemento el elemento dentro del nodo.
      * @return un nuevo nodo con el elemento recibido dentro del mismo.
      */
-    @Override protected NodoAVL nuevoNodo(T elemento) {
+    @Override
+    protected NodoAVL nuevoNodo(T elemento) {
         return new NodoAVL (elemento);
     }
     /**
      * Agrega un nuevo elemento al árbol. El método invoca al método {@link
-     * .ArbolBinarioBusqueda#agrega}, y después balancea el árbol girándolo comos
+     * ArbolBinarioBusqueda#agrega}, y después balancea el árbol girándolo como
      * sea necesario.
      * @param elemento el elemento a agregar.
      */
     @Override public void agrega(T elemento) {
         super.agrega(elemento);
-        Nodo<T> nodoAVL = this.getUltimo();
-        this.rebalanceo((NodoAVL) nodoAVL);
+        Nodo<T> nuevo = this.getFinal();
+        this.rebalanceo((NodoAVL) nuevo);
     }
     /**
      * Método privado que rebalance el árbol.
      */
     private void rebalanceo(NodoAVL nodo) {
-        if (nodo == null){
-            return;
-        }
-        getAltura(nodo);
-        if (getBalance(nodo) == -2){
-            if (getBalance((NodoAVL)nodo.derecho) == 1){
-                NodoAVL der = (NodoAVL) nodo.derecho;
-                this.giraDerechaAVL(der);
-                this.getAltura(der);
-                this.getAltura((NodoAVL)der.padre);
+        if(nodo != null){
+            getAltura(nodo);
+            NodoAVL izq = (NodoAVL) nodo.izquierdo;
+            NodoAVL der = (NodoAVL) nodo.derecho;
+            int balance = getAltura(izq)-getAltura(der);
+            if(balance == -2) {
+                if ((getAltura((NodoAVL) der.izquierdo) - getAltura((NodoAVL) der.derecho)) == 1) {
+                    super.giraDerecha(der);
+                    getAltura(der);
+                    getAltura((NodoAVL) der.padre);
+                }
+                super.giraIzquierda(nodo);
+                getAltura(nodo);
             }
-            this.giraIzquierdaAVL(nodo);
-            this.getAltura(nodo);
-        }
-        else if (getBalance(nodo) == 2){
-            if (getBalance((NodoAVL) nodo.izquierdo) == -1){
-                NodoAVL nIzq = (NodoAVL) nodo.izquierdo;
-                this.giraIzquierdaAVL(nIzq);
-                this.getAltura(nIzq);
-                this.getAltura((NodoAVL)nIzq.padre);
+            if(balance ==2){
+                if ((getAltura((NodoAVL) izq.izquierdo) - getAltura((NodoAVL) izq.derecho)) == -1) {
+                    super.giraIzquierda(izq);
+                    getAltura(izq);
+                    getAltura((NodoAVL)izq.padre);
+                }
+                super.giraDerecha(nodo);
+                getAltura(nodo);
             }
-            this.giraDerechaAVL(nodo);
-            this.getAltura(nodo);
+            rebalanceo((NodoAVL)nodo.padre);
         }
-        this.rebalanceo((NodoAVL) nodo.padre);
-    }
-
-    private int getBalance(NodoAVL n){
-        return this.getAltura((NodoAVL)n.izquierdo) - this.getAltura((NodoAVL)n.derecho);
     }
 
     /**
@@ -143,19 +128,18 @@ public class ArbolAVL<T extends Comparable<T>> extends ArbolBinarioBusqueda<T> {
      * @param elemento el elemento a eliminar del árbol.
      */
     @Override public void elimina(T elemento) {
-        Nodo<T> nodo = buscaNodo(raiz, elemento);
+        Nodo<T> nuevo = buscaNodo(raiz, elemento);
         super.elimina(elemento);
-        rebalanceo((NodoAVL) nodo);
+        rebalanceo((NodoAVL) nuevo);
     }
-
     /**
      * Lanza la excepción {@link UnsupportedOperationException}: los árboles AVL
      * no pueden ser girados a la derecha por los usuarios de la clase, porque
      * se desbalancean.
-     * @param q el nodo sobre el que se quiere girar.
+     * @param nodo el nodo sobre el que se quiere girar.
      * @throws UnsupportedOperationException siempre.
      */
-    @Override public void giraDerecha(Nodo<T> q) {
+    @Override public void giraDerecha(Nodo<T> nodo) {
         throw new UnsupportedOperationException("Los árboles AVL no  pueden " +
                 "girar a la izquierda por el usuario.");
     }
@@ -164,26 +148,24 @@ public class ArbolAVL<T extends Comparable<T>> extends ArbolBinarioBusqueda<T> {
      * Lanza la excepción {@link UnsupportedOperationException}: los árboles AVL
      * no pueden ser girados a la izquierda por los usuarios de la clase, porque
      * se desbalancean.
-     * @param p el nodo sobre el que se quiere girar.
+     * @param nodo el nodo sobre el que se quiere girar.
      * @throws UnsupportedOperationException siempre.
      */
-    @Override public void giraIzquierda(Nodo<T> p) {
+    @Override public void giraIzquierda(Nodo<T> nodo) {
         throw new UnsupportedOperationException("Los árboles AVL no  pueden " +
                 "girar a la derecha por el usuario.");
     }
-
-    private void giraDerechaAVL(NodoAVL p){
-        super.giraDerecha(p);
-    }
-    private void giraIzquierdaAVL(NodoAVL p){ // Aquí suponemos que p tiene hijo derecho q
-        super.giraIzquierda(p);
-    }
-    private int getAltura(NodoAVL v){
-        if (v == null){
+    private int getAltura(NodoAVL nodo){
+        if (nodo == null){
             return -1;
         }
-        v.altura = Math.max(this.getAltura((NodoAVL)v.izquierdo), this.getAltura((NodoAVL)v.derecho)) + 1;
-        return v.altura;
+        nodo.altura = Math.max(this.getAltura((NodoAVL)nodo.izquierdo), this.getAltura((NodoAVL)nodo.derecho)) + 1;
+        return nodo.altura;
+    }
+    public ArbolAVL(Lista<T> coercion){
+        for(T elemento : coercion){
+            this.agrega(elemento);
+        }
     }
 
 }
