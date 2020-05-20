@@ -1,5 +1,12 @@
 package dict;
 
+/**
+ * <h1>Clase palabra</h1>
+ * Aquí se modelan los elementos de tipo palabra que serán almacenados en un diccionario, son tambien las componentes
+ * principales de éstos, por lo que resultan escenciales.
+ * @author Ariel Merino and Armando Aquino
+ * @version 1
+ */
 public class Palabra implements Comparable<Palabra> {
 
     String word;
@@ -8,11 +15,9 @@ public class Palabra implements Comparable<Palabra> {
         this.word = word;
     }
 
-
-
     @Override
     public int compareTo(Palabra o) {
-        return removerTildes(word.toLowerCase()) == removerTildes(o.word.toLowerCase()) ? 1: -1;
+        return word.compareTo(o.word);
     }
 
     static String removerTildes(String cadena) {
@@ -22,5 +27,9 @@ public class Palabra implements Comparable<Palabra> {
                 .replace("ó", "o")
                 .replace("ú", "u")
                 .replace("ü", "u");
+    }
+
+    public int sonSimilares(Palabra palabra){
+        return word.toLowerCase().compareTo(palabra.word.toLowerCase());
     }
 }

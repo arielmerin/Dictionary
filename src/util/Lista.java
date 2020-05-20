@@ -11,9 +11,13 @@ import java.util.Iterator;
  */
 public class Lista<T> implements Listable<T>, Iterable<T>{
 
-    /* Clase interna para construir la estructura */
+    /**
+     * Clase interna para construir la estructura
+     **/
     private class Nodo{
-        /* Referencias a los nodos anterior y siguiente */
+        /**
+         *  Referencias a los nodos anterior y siguiente
+         **/
         public Nodo anterior, siguiente;
         /* El elemento que almacena un nodo */
         public T elemento;

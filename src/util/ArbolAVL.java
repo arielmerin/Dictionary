@@ -77,6 +77,12 @@ public class ArbolAVL<T extends Comparable<T>> extends ArbolBinarioBusqueda<T> {
         super(coleccion);
     }
 
+    public ArbolAVL(Lista<T> coercion) {
+        for (T elemento : coercion) {
+            this.agrega(elemento);
+        }
+    }
+
     /**
      * Construye un nuevo nodo, usando una instancia de {@link NodoAVL}.
      * @param elemento el elemento dentro del nodo.
@@ -87,7 +93,7 @@ public class ArbolAVL<T extends Comparable<T>> extends ArbolBinarioBusqueda<T> {
     }
     /**
      * Agrega un nuevo elemento al árbol. El método invoca al método {@link
-     * .ArbolBinarioBusqueda#agrega}, y después balancea el árbol girándolo como
+     * .ArbolBinarioBusqueda#agrega}, y después balancea el árbol girándolo comos
      * sea necesario.
      * @param elemento el elemento a agregar.
      */
