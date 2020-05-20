@@ -1,6 +1,6 @@
 package dict;
 
-public class Palabra implements Comparable {
+public class Palabra implements Comparable<Palabra> {
 
     String word;
 
@@ -8,9 +8,8 @@ public class Palabra implements Comparable {
         this.word = word;
     }
 
-
     @Override
-    public int compareTo(Object o) {
+    public int compareTo(Palabra o) {
         return 0;
     }
 }
