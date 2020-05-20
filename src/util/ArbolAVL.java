@@ -13,7 +13,7 @@ public class ArbolAVL<T extends Comparable<T>> extends ArbolBinarioBusqueda<T> {
      * con los nodos de árbol binario, es que tienen una variable de clase
      * para la altura del nodo.
      */
-    protected class NodoAVL extends Nodo {
+    public class NodoAVL extends Nodo {
 
         /** La altura del nodo. */
         public int altura;
