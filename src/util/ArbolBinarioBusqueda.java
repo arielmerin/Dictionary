@@ -13,57 +13,56 @@ import java.util.NoSuchElementException;
  *   <li>Cualquier elemento en el árbol es menor o igual que todos sus
  *       descendientes por la derecha.</li>
  * </ul>
- * @author Ariel Merino 317031326
  */
 public class ArbolBinarioBusqueda<T extends Comparable<T>> extends ArbolBinario<T> {
 
     /* Clase privada para iteradores de árboles binarios ordenados. */
     private class Iterador implements Iterator<T> {
 
-        /* util.Pila para recorrer los nodos en DFS in-order. */
+        /* Pila para recorrer los nodos en DFS in-order. */
         private Pila<Nodo> pila;
 
         /* Construye un iterador con el nodo recibido. */
         public Iterador() {
             pila = new Pila<>();
-            Nodo n = raiz;
-            while (n != null){
-                pila.agrega(n);
-                n = n.izquierdo;
+            Nodo aux = raiz;
+            while(aux != null){
+                pila.agrega(aux);
+                aux = aux.izquierdo;
             }
         }
 
         /* Nos dice si hay un elemento siguiente. */
-        @Override public boolean hasNext() {
+        @Override
+        public boolean hasNext() {
             return !pila.esVacio();
+
         }
 
         /* Regresa el siguiente elemento en orden DFS in-order. */
-        @Override public T next() {
-            if(pila.esVacio()){
-                throw  new NoSuchElementException("No hay mas elementos");
+        @Override
+        public T next() {
+            if(! pila.esVacio()){
+                Nodo aux = pila.pop();
+                T e = (T) aux.elemento;
+                aux= aux.derecho;
+                while(aux != null){
+                    pila.push(aux);
+                    aux = aux.izquierdo;
+                }
+                return e;
+            }else{
+                throw new NoSuchElementException("No hay elementos");
             }
-            Nodo n = pila.pop();
-            T elem = (T) n.elemento;
-            n = n.derecho;
-            while (n != null){
-                pila.push(n);
-                n = n.izquierdo;
-            }
-            return elem;
         }
     }
 
-    protected Nodo ultimo;
-
-    public Nodo getUltimo() {
-        return ultimo;
-    }
 
     /**
      * Constructor que no recibe parámeteros. {@link ArbolBinario}.
      */
     public ArbolBinarioBusqueda() {
+
     }
 
     /**
@@ -77,7 +76,7 @@ public class ArbolBinarioBusqueda<T extends Comparable<T>> extends ArbolBinario<
         super(coleccion);
     }
 
-    protected void agregaNodo(Nodo<T> n, Nodo<T> nuevo) {
+    protected void agregaNodo(Nodo<T> n, Nodo<T> nuevo){
         if(n.elemento.compareTo(nuevo.elemento) >= 0){
             if (n.hayIzquierdo()){
                 agregaNodo(n.izquierdo, nuevo);
@@ -99,49 +98,37 @@ public class ArbolBinarioBusqueda<T extends Comparable<T>> extends ArbolBinario<
      * Agrega un nuevo elemento al árbol. El árbol conserva su orden in-order.
      * @param elemento el elemento a agregar.
      */
-    @Override public void agrega(T elemento) {
-        if (elemento == null) {
-            throw new IllegalArgumentException("El elemento enviado es nulo");
-        }
-        Nodo agregar = this.nuevoNodo(elemento);
-        this.ultimo = agregar;
+    @Override
+    public void agrega(T elemento) {
+        Nodo nuevo = this.nuevoNodo(elemento);
+        this.last = nuevo;
         tamanio++;
-        if (raiz == null){
-            this.raiz = agregar;
+        if (raiz != null){
+            this.agregaNodo(raiz, nuevo);
         }else {
-            this.agregaNodo(raiz, agregar);
+            this.raiz = nuevo;
         }
-
     }
 
     protected Nodo<T> eliminaNodo(Nodo<T> n){
-        /**
-         * Donde es la raiz sin hijos
-         */
-        if(!n.hayPadre() && !n.hayIzquierdo() &&!n.hayIzquierdo()){
+        if(!n.hayPadre() && !n.hayIzquierdo() && !n.hayDerecho()){ //n solo es la raíz y no tiene hijos
             limpia();
-            /**
-             * Donde es la raiz y tiene hijo derecho
-             */
-        }else if(!n.hayPadre()&& n.hayDerecho()){
-            raiz = n.derecho;
-            n.derecho.padre = null;
-            /**
-             * donde es la raiz y tiene hijo izquierdo
-             */
-        }else if (!n.hayPadre() && n.hayIzquierdo()){
-            raiz = n.izquierdo;
-            n.izquierdo.padre = null;
-            /**
-             * Donde es una hoja
-             */
-        }else if(!n.hayDerecho() && !n.hayIzquierdo() ){
-            if (n.padre.hayIzquierdo() && n.padre.izquierdo == n){
+        }else if(!n.hayIzquierdo() && !n.hayDerecho()){  // n es una hoja
+            if(n.padre.hayIzquierdo() && n.padre.izquierdo ==n){
                 n.padre.izquierdo = null;
-            }else {
+            }else{
                 n.padre.derecho = null;
             }
-        }else if( n.hayDerecho()){
+        }else if(n.hayIzquierdo()){ //n tiene hijo izquierdo
+            if(n.padre.hayIzquierdo() && n.padre.izquierdo == n){
+                n.padre.izquierdo = n.izquierdo;
+                n.izquierdo.padre = n.padre;
+
+            }else{
+                n.padre.derecho = n.izquierdo;
+                n.izquierdo.padre = n.padre;
+            }
+        }else if(n.hayDerecho()){ //n tiene hijo derecho
             if (n.padre.hayIzquierdo() && n.padre.izquierdo == n){
                 n.padre.izquierdo = n.derecho;
                 n.derecho.padre = n.padre;
@@ -149,14 +136,12 @@ public class ArbolBinarioBusqueda<T extends Comparable<T>> extends ArbolBinario<
                 n.padre.derecho = n.derecho;
                 n.derecho.padre = n.padre;
             }
-        }else if (n.hayIzquierdo()){
-            if (n.padre.hayIzquierdo() && n.padre.izquierdo == n){
-                n.padre.izquierdo = n.izquierdo;
-                n.izquierdo.padre = n.padre;
-            }else {
-                n.padre.derecho = n.izquierdo;
-                n.izquierdo.padre = n.padre;
-            }
+        }else if(!n.hayPadre() && n.hayIzquierdo()){ // n es raíz y tiene hijo izquierdo
+            raiz = n.izquierdo;
+            n.izquierdo.padre = null;
+        }else if(!n.hayPadre() && n.hayDerecho()){ //n es raiz y tiene hijo derecho
+            raiz = n.derecho;
+            n.derecho.padre = null;
         }
         return null;
     }
@@ -164,34 +149,32 @@ public class ArbolBinarioBusqueda<T extends Comparable<T>> extends ArbolBinario<
     /**
      * Elimina un elemento. Si el elemento no está en el árbol, no hace nada; si
      * está varias veces, elimina el primero que encuentre (in-order). El árbol
-     * conserva su orden in-order.tamanio == 0 &&
+     * conserva su orden in-order.
      * @param elemento el elemento a eliminar.
      */
-    @Override public void elimina(T elemento) {
-        if (elemento == null){
-            throw  new IllegalArgumentException("El elemento a eliminar es nulo");
-        }
+    @Override
+    public void elimina(T elemento) {
         if(!contiene(elemento)){
             return;
         }
-        Nodo elimina = buscaNodo(raiz,elemento);
+        Nodo aux = buscaNodo(raiz,elemento);
         tamanio--;
-        if (elimina.hayIzquierdo() && elimina.hayDerecho()){
-            Nodo nodoMax = maximoEnSubarbolIzquierdo(elimina.izquierdo);
-            T elemMax = (T) nodoMax.elemento;
-            elimina.elemento = elemMax;
-            eliminaNodo(nodoMax);
+        if (aux.hayDerecho() && aux.hayIzquierdo()){
+            Nodo maximo = maximoEnSubarbolIzquierdo(aux.izquierdo);
+            T elem = (T) maximo.elemento;
+            aux.elemento = elem;
+            eliminaNodo(maximo);
         }else{
-            eliminaNodo(elimina);
+            eliminaNodo(aux);
         }
     }
 
 
     private Nodo maximoEnSubarbolIzquierdo(Nodo n){
-        if (!n.hayDerecho()){
-            return n;
+        if (n.hayDerecho()){
+            return maximoEnSubarbolIzquierdo(n.derecho);
         }
-        return maximoEnSubarbolIzquierdo(n.derecho);
+        return n;
     }
 
     /**
@@ -201,13 +184,10 @@ public class ArbolBinarioBusqueda<T extends Comparable<T>> extends ArbolBinario<
      * @return <code>true</code> si el elemento está contenido en el arbol,
      *         <code>false</code> en otro caso.
      */
-    @Override public boolean contiene(T elemento){
-        if (elemento == null){
-            throw  new IllegalArgumentException("Elemento invalido");
-        }
+    @Override
+    public boolean contiene(T elemento){
         return buscaNodo(raiz, elemento) != null;
     }
-
 
     protected Nodo<T> buscaNodo(Nodo<T> n, T elemento){
         if (n == null){
@@ -216,84 +196,72 @@ public class ArbolBinarioBusqueda<T extends Comparable<T>> extends ArbolBinario<
         if (n.elemento.equals(elemento)){
             return n;
         }
-        Nodo subAIzq = buscaNodo(n.izquierdo, elemento);
-        Nodo subADer = buscaNodo(n.derecho, elemento);
-        return subAIzq != null ? subAIzq : subADer;
+        Nodo izq = buscaNodo(n.izquierdo, elemento);
+        Nodo der = buscaNodo(n.derecho, elemento);
+        return izq != null ? izq : der;
     }
 
 
     /**
      * Gira el árbol a la derecha sobre el nodo recibido. Si el nodo no
      * tiene hijo izquierdo, el método no hace nada.
-     * @param q el nodo sobre el que vamos a girar.
+     * @param nodo el nodo sobre el que vamos a girar.
      */
-    public void giraDerecha(Nodo<T> q) {
-        if (!q.hayIzquierdo()){
+    public void giraDerecha(Nodo<T> nodo) {
+        if (!nodo.hayIzquierdo()){
             return;
         }
-
-        Nodo p = q.izquierdo;
-
-        if (p.hayDerecho()){
-            q.izquierdo = p.derecho;
-            p.derecho.padre = q;
+        Nodo aux = nodo.izquierdo;
+        aux.padre = nodo.padre;
+        if (aux == raiz){
+            raiz = nodo;
         }else {
-            q.izquierdo = null;
-        }
-        p.derecho = q;
-
-        if (q.hayPadre()){
-            if(esHijoIzquierdo(q)){
-                q.padre.izquierdo = p;
+            if (nodo.padre.izquierdo == nodo){
+                nodo.padre.izquierdo = aux;
             }else {
-                q.padre.derecho = p;
+                nodo.padre.derecho = aux;
             }
-            p.padre = q.padre;
-        }else {
-            p.padre = null;
-            this.raiz = p;
         }
-        q.padre = p;
-    }
-    protected boolean esHijoIzquierdo(Nodo nodo) {
-        if(nodo.padre == null) { return false; }
-        if(nodo.padre.hayIzquierdo()) {
-            return nodo.padre.izquierdo.equals(nodo);
+        nodo.izquierdo = aux.derecho;
+        if (aux.hayDerecho()){
+            aux.derecho.padre = nodo;
         }
-        return false;
+        aux.derecho = nodo;
+        nodo.padre = aux;
     }
+
     /**
      * Gira el árbol a la izquierda sobre el nodo recibido. Si el nodo no
      * tiene hijo derecho, el método no hace nada.
-     * @param p el nodo sobre el que vamos a girar.
+     * @param nodo el nodo sobre el que vamos a girar.
      */
-    public void giraIzquierda(Nodo<T> p) {
-        if (!p.hayDerecho()){
+    public void giraIzquierda(Nodo<T> nodo) {
+        if (!nodo.hayDerecho()){
             return;
         }
-        Nodo q = p.derecho;
-        if (q.hayIzquierdo()){
-            p.derecho = q.izquierdo;
-            q.izquierdo.padre = p;
+        Nodo aux = nodo.derecho;
+        aux.padre = nodo.padre;
+        if (nodo == raiz){
+            raiz = aux;
         }else{
-            p.derecho = null;
-        }
-        q.izquierdo = p;
-
-        if (p.hayPadre()){
-            if (esHijoIzquierdo(p)){
-                p.padre.izquierdo = q;
+            if (nodo.padre.izquierdo == nodo){
+                nodo.padre.izquierdo = aux;
             }else {
-                p.padre.derecho = q;
+                nodo.padre.derecho = aux;
             }
-            q.padre = p.padre;
-        }else {
-            q.padre = null;
-            this.raiz = q;
         }
-        p.padre = q;
+        nodo.derecho = aux.izquierdo;
+        if (aux.hayIzquierdo()){
+            aux.izquierdo.padre = nodo;
+        }
+        aux.izquierdo = nodo;
+        nodo.padre = aux;
     }
+    protected Nodo last;
 
+    public Nodo getFinal() {
+        return last;
+    }
 
     /**
      * Regresa un iterador para iterar el árbol. El árbol se itera en orden.
