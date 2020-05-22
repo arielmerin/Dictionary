@@ -1,11 +1,14 @@
 package util;
+
+import java.io.Serializable;
+
 /**
  * <p>Clase para árboles AVL.</p>
  *
  * <p>Un árbol AVL cumple que para cada uno de sus nodos, la diferencia entre
  * la altura de sus subárboles izquierdo y derecho está entre -1 y 1.</p>
  */
-public class ArbolAVL<T extends Comparable<T>> extends ArbolBinarioBusqueda<T> {
+public class ArbolAVL<T extends Comparable<T>> extends ArbolBinarioBusqueda<T> implements Serializable {
 
     /**
      * Clase interna protegida para nodos de árboles AVL. La única diferencia
