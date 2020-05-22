@@ -22,7 +22,7 @@ public class Main {
 
 
         //System.out.println(stringArbolAVL);
-        Lista<String> palabrasCambias = diccionario.cambiaPalabra("aei");
+        Lista<String> palabrasCambias = diccionario.cambiaPalabra("vallena");
         System.out.println(palabrasCambias);
         System.out.println("Las palabras que le va a sugerir son estas; ");
         for (String palabra: palabrasCambias){
