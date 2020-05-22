@@ -11,14 +11,13 @@ public class Main {
         Diccionario diccionario = new Diccionario();
         Lista<String> lista = diccionario.leeTXT();
 
-        ArbolAVL<String> stringArbolAVL;
-        stringArbolAVL = new ArbolAVL<>(lista);
-
-
         File archivo = new File("dataD.dat");
         Serializer serializer = new Serializer();
+        ArbolAVL<String> stringArbolAVL;
+        stringArbolAVL = (ArbolAVL<String>) serializer.read("dataD.ser");
+        System.out.println(stringArbolAVL);
 
-        serializer.write(stringArbolAVL, "dataD.ser");
+
 
         System.out.println(stringArbolAVL);
         Lista<String> palabrasCambias = diccionario.cambiaPalabra("vallena");

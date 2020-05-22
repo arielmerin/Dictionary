@@ -8,14 +8,14 @@ import java.io.Serializable;
  * <p>Un árbol AVL cumple que para cada uno de sus nodos, la diferencia entre
  * la altura de sus subárboles izquierdo y derecho está entre -1 y 1.</p>
  */
-public class ArbolAVL<T extends Comparable<T>> extends ArbolBinarioBusqueda<T> implements Serializable {
+public class ArbolAVL<T extends Comparable<T> & Serializable> extends ArbolBinarioBusqueda<T> implements Serializable {
 
     /**
      * Clase interna protegida para nodos de árboles AVL. La única diferencia
      * con los nodos de árbol binario, es que tienen una variable de clase
      * para la altura del nodo.
      */
-    public class NodoAVL extends Nodo {
+    public class NodoAVL extends Nodo implements Serializable {
 
         /** La altura del nodo. */
         public int altura;

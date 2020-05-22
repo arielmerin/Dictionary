@@ -1,5 +1,6 @@
 package util;
 
+import java.io.Serializable;
 import java.util.NoSuchElementException;
 /**
  * <p>Clase abstracta para modelar la estructura de datos Arbol Binario</p>
@@ -13,11 +14,11 @@ import java.util.NoSuchElementException;
  * @version 1.0
  */
 
-public abstract class ArbolBinario<T> implements Coleccionable<T> {
+public abstract class ArbolBinario<T> implements Coleccionable<T>, Serializable {
     /**
      * Clase interna protegida para nodos.
      */
-    protected class Nodo<T> {
+    protected class Nodo<T> implements Serializable {
 
         /** El elemento del nodo. */
         public T elemento;

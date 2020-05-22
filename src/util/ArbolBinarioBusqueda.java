@@ -1,5 +1,6 @@
 package util;
 
+import java.io.Serializable;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
@@ -14,7 +15,7 @@ import java.util.NoSuchElementException;
  *       descendientes por la derecha.</li>
  * </ul>
  */
-public class ArbolBinarioBusqueda<T extends Comparable<T>> extends ArbolBinario<T> {
+public class ArbolBinarioBusqueda<T extends Comparable<T>> extends ArbolBinario<T> implements Serializable {
 
     /* Clase privada para iteradores de árboles binarios ordenados. */
     private class Iterador implements Iterator<T> {
