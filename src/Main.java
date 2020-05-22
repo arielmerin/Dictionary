@@ -1,11 +1,9 @@
 import dict.Diccionario;
 import serializer.Serializer;
 import util.ArbolAVL;
-import util.Coleccionable;
 import util.Lista;
 
 import java.io.File;
-import java.util.logging.FileHandler;
 
 public class Main {
     public static void main(String[] args) {
@@ -13,20 +11,12 @@ public class Main {
         Diccionario diccionario = new Diccionario();
         Lista<String> lista = diccionario.leeTXT();
 
-        for (Lista<String> lista1: doblePalabraCambiada){
-            for (String palabra1: lista1){
-                if (stringArbolAVL.contiene(palabra1)){
-                    ArbolAVL.NodoAVL nodoAVL = (ArbolAVL.NodoAVL) stringArbolAVL.buscando(palabra1);
-                    System.out.println(nodoAVL);
-                    System.out.println(nodoAVL.izquierdo);
-                    System.out.println(nodoAVL.derecho);
-                }
+        ArbolAVL<String> stringArbolAVL;
+        stringArbolAVL = new ArbolAVL<>(lista);
+
 
         File archivo = new File("dataD.dat");
         Serializer serializer = new Serializer();
-
-        ArbolAVL<String> stringArbolAVL;
-        stringArbolAVL = new ArbolAVL<>(lista);
 
         serializer.write(stringArbolAVL, "dataD.ser");
 

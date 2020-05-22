@@ -3,6 +3,7 @@ package serializer;
 import java.io.*;
 
 /**
+ * <h1>Serializer </h1>
  * Permite hacer la inscripcion de objetos en un documento de salida para mantener la persistencia de datos
  * @author Armando Aquino and Kevin Ariel Merino Peña
  * @version 1
@@ -10,14 +11,14 @@ import java.io.*;
 public class Serializer {
     /**
      * Metodo que crea un flujo de salida y almacena objetos en archivos
-     * @param arregloDinamico Objeto que queremos almacenar
+     * @param baseDeDatos Objeto que queremos almacenar
      * @param ruta Nombre del archivo donde se almacenaran nuestros objetos
      */
-    public void write(Object arregloDinamico, String ruta){
+    public void write(Object baseDeDatos, String ruta){
         ObjectOutputStream writer = null;
         try{
             writer = new ObjectOutputStream(new FileOutputStream(ruta));
-            writer.writeObject(arregloDinamico);
+            writer.writeObject(baseDeDatos);
         }catch(NotSerializableException exc){
             System.out.println(exc);
         }catch(FileNotFoundException e){
