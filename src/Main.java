@@ -7,7 +7,9 @@ import java.io.File;
 
 public class Main {
     public static void main(String[] args) {
-        System.out.println("Hello muuuuuuuundo");
+        char acento = 'ü';
+        int valor = (int)acento;
+        System.out.println("Hello muuuuuuuundo" + valor);
         Diccionario diccionario = new Diccionario();
         Lista<String> lista = diccionario.leeTXT();
 
@@ -15,12 +17,12 @@ public class Main {
         Serializer serializer = new Serializer();
         ArbolAVL<String> stringArbolAVL;
         stringArbolAVL = (ArbolAVL<String>) serializer.read("dataD.ser");
-        System.out.println(stringArbolAVL);
+        //System.out.println(stringArbolAVL);
 
 
 
-        System.out.println(stringArbolAVL);
-        Lista<String> palabrasCambias = diccionario.cambiaPalabra("vallena");
+        //System.out.println(stringArbolAVL);
+        Lista<String> palabrasCambias = diccionario.cambiaPalabra("aei");
         System.out.println(palabrasCambias);
         for (String palabra: palabrasCambias){
             if (stringArbolAVL.contiene(palabra)){

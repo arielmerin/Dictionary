@@ -46,7 +46,18 @@ public class Diccionario {
             char[] arreglo = palabra.toLowerCase().toCharArray();
             for (int j = 97; j < 123 ; j++ ){
                 arreglo[i] = (char)j;
-                palabrasConCambio.agregar(String.valueOf(arreglo));
+                palabrasConCambio.agregar(String.valueOf(arreglo) + "\n");
+            }
+            int[] acentos = new int[6];
+            acentos[0] = 225;
+            acentos[1] = 233;
+            acentos[2] = 237;
+            acentos[3] = 243;
+            acentos[4] = 250;
+            acentos[5] = 252;
+            for (int j = 0; j < acentos.length; j++) {
+                arreglo[i] = (char)acentos[j];
+                palabrasConCambio.agregar(String.valueOf(arreglo) + "\n");
             }
         }
         return palabrasConCambio;
