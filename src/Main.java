@@ -19,7 +19,6 @@ public class Main {
         }
         System.out.println(doblePalabraCambiada);
 
-
         for (Lista<String> lista1: doblePalabraCambiada){
             for (String palabra1: lista1){
                 if (stringArbolAVL.contiene(palabra1)){
