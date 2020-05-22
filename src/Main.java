@@ -24,12 +24,17 @@ public class Main {
         //System.out.println(stringArbolAVL);
         Lista<String> palabrasCambias = diccionario.cambiaPalabra("aei");
         System.out.println(palabrasCambias);
+        System.out.println("Las palabras que le va a sugerir son estas; ");
         for (String palabra: palabrasCambias){
             if (stringArbolAVL.contiene(palabra)){
                 ArbolAVL.NodoAVL nodoAVL = (ArbolAVL.NodoAVL) stringArbolAVL.buscando(palabra);
                 System.out.println(nodoAVL);
-                System.out.println(nodoAVL.izquierdo);
-                System.out.println(nodoAVL.derecho);
+                if (nodoAVL.hayIzquierdo()){
+                    System.out.println(nodoAVL.izquierdo);
+                }
+                if (nodoAVL.hayDerecho()){
+                    System.out.println(nodoAVL.derecho);
+                }
             }
         }
     }
