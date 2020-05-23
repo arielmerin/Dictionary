@@ -18,8 +18,17 @@ import static util.Utilidades.getStr;
  */
 public class UImenu {
 
+    /**
+     * Estructura principal donde se alojará el árbol con el contenido del diccionario
+     */
     private ArbolAVL<String> arbolAVL;
+    /**
+     * Objeto para manejar la persistencia de datos dentro del programa
+     */
     private Serializer serializer = new Serializer();
+    /**
+     * Entidad encargada de proveernos los métodos suficientes para modelar el comportamiento del diccionario
+     */
     private Diccionario diccionario = new Diccionario();
 
     /**
@@ -67,14 +76,15 @@ public class UImenu {
     }
 
     /**
-     * Delega la tarea de guardar <i> serializar </i> el diccionario
+     * Delega la tarea de guardar <i> serializar </i> el objeto de tipo arbol que funge como diccionario
      */
     private void guardar(){
         serializer.write(arbolAVL, "dataD.ser");
     }
 
     /**
-     * Se encarga de buscar si existe un archivo c
+     * Se encarga de buscar si existe un archivo con información de diccionario, en caso de encontrarlo lo lee para
+     * trabajar con esa información, en otro caso crea un nuevo archivo y lee el archivo txt que se supone que siempre encontrará
      */
     private void revisaExistencia(){
         File archivo = new File("dataD.ser");
@@ -88,6 +98,10 @@ public class UImenu {
         }
     }
 
+    /**
+     * Delega la tarea de consultar alguna palabra en el diccionario, encargándose de revisar si está bien escrita y si no
+     * mostrar sugerencias a la vez que preguntar si la usuaria desea agregar dicha palabra al diccionario
+     */
     private void consultar(){
         String palabraConsulta = getStr("Ingrese la palabra: ", "Error, intente de nuevo");
         if (diccionario.estaCorrecto(palabraConsulta,arbolAVL)){
