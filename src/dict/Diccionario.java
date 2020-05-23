@@ -102,7 +102,7 @@ public class Diccionario {
      * @return true en caso de encontrarla, falso en cualquier otro caso
      */
     public boolean estaCorrecto(String palabra, ArbolAVL<String> arbolAVL){
-        if (arbolAVL.contiene(lcFirst(palabra))){
+        if (arbolAVL.contiene(lcFirst(palabra)) || arbolAVL.contiene(palabra)){
             ArbolAVL.NodoAVL nodoAVL = (ArbolAVL.NodoAVL) arbolAVL.buscando(palabra.toLowerCase());
             if (nodoAVL.elemento.equals(palabra.toLowerCase())){
                 return true;
@@ -112,15 +112,15 @@ public class Diccionario {
     }
 
     /**
-     * Cambia una cadena a minúsculas
+     * Cambia la primera letra de cualquier cadena a minúsculas
      * @param str cadena a ser reemplazada
-     * @return mismos caracteres de entrada, pero con la cadena en minúsculas
+     * @return mismos caracteres de entrada, pero con la primera letra en minúsculas
      */
     private static String lcFirst(String str) {
         if (str.isEmpty()) {
             return str;
         } else {
-            return str.toLowerCase();
+            return Character.toLowerCase(str.charAt(0)) + str.substring(1);
         }
     }
 }

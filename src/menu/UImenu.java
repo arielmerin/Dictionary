@@ -70,6 +70,7 @@ public class UImenu {
         int debeAgregar = getInt("Ingrese la opción deseada: ", "Error, ingrese una opción válida");
         boolean añadir = debeAgregar == 1? true: false;
         if (añadir){
+            arbolAVL.agrega(palabraNueva);
             arbolAVL.agrega(palabraNueva.toLowerCase());
         }
         return añadir;
