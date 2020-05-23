@@ -91,7 +91,7 @@ public class UImenu {
         if (archivo.exists()){
             arbolAVL = (ArbolAVL<String>) serializer.read("dataD.ser");
         }else {
-            System.out.println("No existía el archivo");
+            System.out.println("Espere por fabor ;)");
             Lista<String> lista = diccionario.leeTXT();
             arbolAVL = new ArbolAVL<>(lista);
             guardar();
