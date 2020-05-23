@@ -112,15 +112,15 @@ public class Diccionario {
     }
 
     /**
-     * Cambia la primera letra de cualquier cadena a minúsculas
+     * Cambia una cadena a minúsculas
      * @param str cadena a ser reemplazada
-     * @return mismos caracteres de entrada, pero con la primera letra en minúsculas
+     * @return mismos caracteres de entrada, pero con la cadena en minúsculas
      */
     private static String lcFirst(String str) {
         if (str.isEmpty()) {
             return str;
         } else {
-            return Character.toLowerCase(str.charAt(0)) + str.substring(1);
+            return str.toLowerCase();
         }
     }
 }
