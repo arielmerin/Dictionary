@@ -25,7 +25,7 @@ public class Utilidades {
         String librearBuffer;
         boolean conti = true;
         do{
-            System.out.println(msg);
+            System.out.print(msg);
             if(scan.hasNextInt())
             {
                 entero = scan.nextInt();
@@ -55,7 +55,7 @@ public class Utilidades {
         String cadena = null;
         boolean continuar = false;
         do {
-            System.out.println(mensaje);
+            System.out.print(mensaje);
             cadena = sc.nextLine().replaceAll("[^a-zA-ZÀ-ÿ\u00f1\u00d1 ]", "");
             if (cadena.equals("")){
                 continuar = true;

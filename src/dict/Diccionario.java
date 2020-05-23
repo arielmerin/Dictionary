@@ -1,5 +1,6 @@
 package dict;
 
+import util.ArbolAVL;
 import util.Lista;;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -63,5 +64,63 @@ public class Diccionario {
         return palabrasConCambio;
     }
 
+    /**
+     * Dado un conjunto de palabas candidatas a aparecer en el arbol, se toma cada uno de los elementos de dicha lista y se
+     * analiza si se encuentran en el arbol, de ser así, se agregan evitando que haya sugerencias repetidas
+     * @param palabras conjunto de palabas candidatas a aparecer en el arbol
+     * @param arbolAVL lugar donde se buscara cada una de las palabras
+     * @return sugerencias, palabras encontradas en el arbol
+     */
+    public Lista<String> consultar(Lista<String> palabras, ArbolAVL arbolAVL){
+        Lista<String> sugerencias = new Lista<>();
+        for (String palabra: palabras){
+            if (arbolAVL.contiene(palabra)){
+                ArbolAVL.NodoAVL nodoAVL = (ArbolAVL.NodoAVL) arbolAVL.buscando(palabra);
+                if (!sugerencias.contiene(nodoAVL.toString())){
+                    sugerencias.agregar(nodoAVL.toString());
+                }
+                if (nodoAVL.hayIzquierdo()){
+                    if (!sugerencias.contiene(String.valueOf(nodoAVL.izquierdo))){
+                        sugerencias.agregar(String.valueOf(nodoAVL.izquierdo));
+                    }
+                }
+                if (nodoAVL.hayDerecho()){
+                    if (!sugerencias.contiene(String.valueOf(nodoAVL.derecho))){
+                        sugerencias.agregar(String.valueOf(nodoAVL.derecho));
+                    }
+                }
+            }
+        }
+        return sugerencias;
+    }
 
+    /**
+     * Identifica si una palabra está bien escrita, esto es; que se encuentre en el arbol y además que al compararlas
+     * sean iguales
+     * @param palabra candidato a estar bien o mal escrito
+     * @param arbolAVL lugar de referencia, donde se buscara si la palabra existe
+     * @return true en caso de encontrarla, falso en cualquier otro caso
+     */
+    public boolean estaCorrecto(String palabra, ArbolAVL<String> arbolAVL){
+        if (arbolAVL.contiene(lcFirst(palabra))){
+            ArbolAVL.NodoAVL nodoAVL = (ArbolAVL.NodoAVL) arbolAVL.buscando(palabra.toLowerCase());
+            if (nodoAVL.elemento.equals(palabra.toLowerCase())){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Cambia la primera letra de cualquier cadena a minúsculas
+     * @param str cadena a ser reemplazada
+     * @return mismos caracteres de entrada, pero con la primera letra en minúsculas
+     */
+    private static String lcFirst(String str) {
+        if (str.isEmpty()) {
+            return str;
+        } else {
+            return Character.toLowerCase(str.charAt(0)) + str.substring(1);
+        }
+    }
 }

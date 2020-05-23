@@ -27,6 +27,7 @@ public abstract class ArbolBinario<T> implements Coleccionable<T>, Serializable 
 
         /**
          * Constructor único que recibe un elemento.
+         *
          * @param elemento el elemento del nodo.
          */
         public Nodo(T elemento) {
@@ -35,8 +36,9 @@ public abstract class ArbolBinario<T> implements Coleccionable<T>, Serializable 
 
         /**
          * Nos dice si el nodo tiene un padre.
+         *
          * @return <tt>true</tt> si el nodo tiene padre,
-         *         <tt>false</tt> en otro caso.
+         * <tt>false</tt> en otro caso.
          */
         public boolean hayPadre() {
             return padre != null;
@@ -44,8 +46,9 @@ public abstract class ArbolBinario<T> implements Coleccionable<T>, Serializable 
 
         /**
          * Nos dice si el nodo tiene un izquierdo.
+         *
          * @return <tt>true</tt> si el nodo tiene izquierdo,
-         *         <tt>false</tt> en otro caso.
+         * <tt>false</tt> en otro caso.
          */
         public boolean hayIzquierdo() {
             return izquierdo != null;
@@ -53,8 +56,9 @@ public abstract class ArbolBinario<T> implements Coleccionable<T>, Serializable 
 
         /**
          * Nos dice si el nodo tiene un derecho.
+         *
          * @return <tt>true</tt> si el nodo tiene derecho,
-         *         <tt>false</tt> en otro caso.
+         * <tt>false</tt> en otro caso.
          */
         public boolean hayDerecho() {
             return derecho != null;
@@ -62,14 +66,15 @@ public abstract class ArbolBinario<T> implements Coleccionable<T>, Serializable 
 
         /**
          * Regresa la altura del nodo.
+         *
          * @return la altura del nodo.
          */
         public int altura() {
-            if (elemento == null){
+            if (elemento == null) {
                 return -1;
-            }else if(tamanio == 1){
+            } else if (tamanio == 1) {
                 return 1;
-            }else {
+            } else {
                 int der = 0;
                 int izq = 0;
                 if (hayDerecho())
@@ -79,8 +84,10 @@ public abstract class ArbolBinario<T> implements Coleccionable<T>, Serializable 
                 return 1 + Math.max(der, izq);
             }
         }
+
         /**
          * Regresa el elemento al que apunta el nodo.
+         *
          * @return el elemento al que apunta el nodo.
          */
         public T get() {
@@ -91,33 +98,30 @@ public abstract class ArbolBinario<T> implements Coleccionable<T>, Serializable 
          * Compara el nodo con otro objeto. La comparación es
          * <em>recursiva</em>. Las clases que extiendan {@link Nodo} deben
          * sobrecargar el método {@link Nodo#equals}.
+         *
          * @param o el objeto con el cual se comparará el nodo.
          * @return <code>true</code> si el objeto es instancia de la clase
-         *         {@link Nodo}, su elemento es igual al elemento de éste
-         *         nodo, y los descendientes de ambos son recursivamente
-         *         iguales; <code>false</code> en otro caso.
+         * {@link Nodo}, su elemento es igual al elemento de éste
+         * nodo, y los descendientes de ambos son recursivamente
+         * iguales; <code>false</code> en otro caso.
          */
         @Override
         public boolean equals(Object o) {
             Nodo aux = (Nodo) o;
-            if(this == null && o == null){
+            if (this == null && o == null) {
                 return true;
-            }else if( this == null || o == null){
+            } else if (this == null || o == null) {
                 return false;
-            }else if(elemento.equals(aux.elemento)){
+            } else if (elemento.equals(aux.elemento)) {
                 return izquierdo.equals(aux.izquierdo) && derecho.equals(aux.derecho);
-            }else{
+            } else {
                 return false;
             }
         }
 
-
-        /**
-         * Regresa una representación en cadena del nodo.
-         * @return una representación en cadena del nodo.
-         */
+        @Override
         public String toString() {
-            return "[ " + elemento + " ]";
+            return (String) elemento;
         }
     }
 
